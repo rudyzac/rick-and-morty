@@ -15,7 +15,6 @@ const CharacterGrid = () => {
     .then(characters => augmentWithEpisodes(characters))
     .then(characters => augmentWithAdditionalLocationInfo(characters))
     .then(characters => augmentWithAdditionalOriginInfo(characters))
-    .then(characters => console.log("Characters: ", characters))
     .catch(e => console.error(e.message))
   }, [])
 
@@ -64,7 +63,6 @@ const CharacterGrid = () => {
       const originDataUrl = character.origin.url
       addGeographicData(character.origin, originDataUrl)
     })
-    console.log("ORIGIN CHARS: ", characters)
     return characters
   }
 
