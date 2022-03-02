@@ -6,7 +6,19 @@ const characterFixture = {
   image: "test-image",
   name: "test-name",
   species: "test-species",
-  gender: "test-gender"
+  gender: "test-gender",
+  origin: {
+    name: "test-origin-name",
+    type: "test-origin-type",
+    dimension: "test-origin-dimension",
+    numberOfResidents: "test-origin-number-of-residents"
+  },
+  location: {
+    name: "test-location-name",
+    type: "test-location-type",
+    dimension: "test-location-dimension",
+    numberOfResidents: "test-location-number-of-residents"
+  }
 }
 
 describe('<CharacterCard />', () => {
