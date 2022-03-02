@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-const StatusIndicator = props => 
+const CharacterStatusIndicator = props => 
   <Container className={props.className}>
     <Dot status={props.status} />
     <span>{props.status}</span>
@@ -31,4 +31,4 @@ const computeDotColor = status => {
   }
 }
 
-export default StatusIndicator
+export default CharacterStatusIndicator

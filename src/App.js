@@ -7,9 +7,7 @@ const App = () => {
     document.title = "Rick & Morty"
   }, [])
 
-  return (
-    <CharacterGrid />
-  )
+  return <CharacterGrid />
 }
 
-export default App;
+export default App

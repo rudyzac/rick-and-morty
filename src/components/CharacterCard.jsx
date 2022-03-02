@@ -1,18 +1,42 @@
+import { useState } from "react"
 import styled from "styled-components"
 import Gender from "./Gender"
-import StatusIndicator from "./StatusIndicator"
+import CharacterStatusIndicator from "./CharacterStatusIndicator"
+import CharacterDetailsPopup from "./CharacterDetailsPopup"
+import ActionButton from "./ActionButton"
 
-const CharacterCard = props =>
-  <Container>
-    <StyledStatusIndicator status={props.character.status} data-test-id="status-indicator" />
-    
-    <InnerContainer>
-      <Avatar src={props.character.image} alt={`${props.character.name}'s profile pic.`} data-test-id="avatar" />
-      <Name data-test-id="name">{props.character.name}</Name>
-      <Species data-test-id="species">{props.character.species}</Species>
-      <StyledGender gender={props.character.gender} data-test-id="gender" />
-    </InnerContainer>
-  </Container>
+const CharacterCard = props => {
+  const [showCharacterDetailsPopup, setShowCharacterDetailsPopup] = useState(false)
+
+  return (
+    <Container>
+      <StyledStatusIndicator status={props.character.status} data-test-id="status-indicator" />
+
+      <InnerContainer>
+        <Avatar src={props.character.image} alt={`${props.character.name}'s profile pic.`} data-test-id="avatar" />
+        <Name data-test-id="name">{props.character.name}</Name>
+        <Species data-test-id="species">{props.character.species}</Species>
+        <StyledGender gender={props.character.gender} data-test-id="gender" />
+
+        <ActionButton
+          type="button"
+          onClick={() => setShowCharacterDetailsPopup(true)}
+          data-testid="details-button"
+        >
+          More
+        </ActionButton>
+      </InnerContainer>
+
+      <CharacterDetailsPopup
+        width="65%"
+        height="65%"
+        show={showCharacterDetailsPopup}
+        characterData={props.character}
+        close={() => setShowCharacterDetailsPopup(false)}
+      />
+    </Container>
+  )
+}
 
 const spacingSmall = '0.625rem'
 
@@ -25,7 +49,7 @@ const Container = styled.div`
   padding-top: 1.25rem;
 `
 
-const StyledStatusIndicator = styled(StatusIndicator)`
+const StyledStatusIndicator = styled(CharacterStatusIndicator)`
   position: relative;
   left: 1rem;
   color: #231E39;
@@ -41,6 +65,11 @@ const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: ${spacingSmall};
+
+  &:last-child {
+    margin-bottom: ${spacingSmall};
+  }
 `
 
 const Avatar = styled.img`
@@ -48,11 +77,10 @@ const Avatar = styled.img`
   border: 1px solid #03BFCB;
   border-radius: 50%;
   padding: 0.438rem;
-  margin-bottom: ${spacingSmall};
 `
 
 const Name = styled.p`
-  margin: 0 0 ${spacingSmall};
+  margin: 0 0;
   font-size: 1.375rem;
   font-weight: 800;
 `
@@ -62,10 +90,9 @@ const Species = styled.p`
   font-size: 0.875rem;
   font-weight: 800;
 	text-transform: uppercase;
-  margin-bottom: ${spacingSmall};
 `
 const StyledGender = styled(Gender)`
-  margin-bottom: ${spacingSmall};
+  height: 1.5rem;
 `
 
 export default CharacterCard

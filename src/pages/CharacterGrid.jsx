@@ -8,13 +8,15 @@ const CharacterGrid = () => {
 
   useEffect(() => {
     axios.get('https://rickandmortyapi.com/api/character').then(response => {
-      setCharacters(response.data.results)
-      return response.data.results
-    }).then(characters => {
-      augmentWithEpisodes(characters)
-    }).catch(e => {
-      console.error(e.message);
+      const characters = response.data.results
+      setCharacters(characters)
+      return characters
     })
+    .then(characters => augmentWithEpisodes(characters))
+    .then(characters => augmentWithAdditionalLocationInfo(characters))
+    .then(characters => augmentWithAdditionalOriginInfo(characters))
+    .then(characters => console.log("Characters: ", characters))
+    .catch(e => console.error(e.message))
   }, [])
 
   const augmentWithEpisodes = characters => {
@@ -32,6 +34,38 @@ const CharacterGrid = () => {
 
       character.episodes = episodes
     })
+    return characters
+  }
+
+  const augmentWithAdditionalLocationInfo = characters => {
+    characters.map(character => {
+      const locationDataUrl = character.location.url
+      addGeographicData(character.location, locationDataUrl)
+    })
+    return characters
+  }
+
+  const addGeographicData = (objectToAugment, geographicDataUrl) => {
+    axios.get(geographicDataUrl).then(geographicData => {
+      const data = geographicData.data
+      setGeographicData(objectToAugment, data)
+    })
+      .catch(e => console.error(e.message))
+  }
+
+  const setGeographicData = (obj, geographicData) => {
+    obj.type = geographicData.type
+    obj.dimension = geographicData.dimension
+    obj.numberOfResidents = geographicData.residents?.length
+  }
+
+  const augmentWithAdditionalOriginInfo = characters => {
+    characters.map(character => {
+      const originDataUrl = character.origin.url
+      addGeographicData(character.origin, originDataUrl)
+    })
+    console.log("ORIGIN CHARS: ", characters)
+    return characters
   }
 
   return (
